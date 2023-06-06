@@ -67,4 +67,34 @@ ImageType Image::getFileType(const char* filename) {
             return TGA;
         }
     }
+    return PNG;
+}
+
+Image& Image::greyscale_avg() {
+    // r+g+b/3
+    if (channels < 3) {
+        printf("Not enough channels to convert to greyscale\n");
+    } else {
+        for (int i = 0; i < size; i += channels) {
+            int gray = (data[i] + data[i + 1] + data[i + 2]) / 3;
+            data[i] = gray;
+            data[i + 1] = gray;
+            data[i + 2] = gray;
+        }
+    }
+    return *this;
+}
+
+Image& Image::greyscale_lum() {
+    if (channels < 3) {
+        printf("Not enough channels to convert to greyscale\n");
+    } else {
+        for (int i = 0; i < size; i += channels) {
+            int gray = 0.2126 * data[i] + 0.7152 * data[i + 1] + 0.0722 * data[i + 2];
+            data[i] = gray;
+            data[i + 1] = gray;
+            data[i + 2] = gray;
+        }
+    }
+    return *this;
 }
