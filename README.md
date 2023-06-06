@@ -1,7 +1,7 @@
 # Image Processing
 
 ## About this repository
-Image Processing conducted in C/C++, using STB libraries. Allows read and write images in various formats (PNG, JPG, BMP, TGA). 
+Image Processing conducted in C/C++, using STB libraries. Filtering images and allows read/write images in various formats (PNG, JPG, BMP, TGA). 
 
 ## Prerequisites
 VS Code for development, G++ to complie
