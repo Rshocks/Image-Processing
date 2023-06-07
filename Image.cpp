@@ -98,3 +98,50 @@ Image& Image::greyscale_lum() {
     }
     return *this;
 }
+
+Image& Image::colorMask(float r, float g, float b){
+    if(channels < 3){
+        printf("Not enough channels to apply color mask\n");
+    } else {
+        for(int i = 0; i < size; i += channels){
+            data[i] *= r;
+            data[i + 1] *= g;
+            data[i + 2] *= b;
+        }
+    }
+    return *this;
+}
+
+Image& Image::encodeMessage(const char* message){
+    uint8_t len = strlen(message) * 8;
+
+    if(len + STEG_HEADER_SIZE > size){
+        printf("Message too long to encode\n");
+        return *this;
+    }
+
+    for(uint8_t i = 0; i < STEG_HEADER_SIZE; i++){
+        printf("Length: %d\n", len >> (STEG_HEADER_SIZE - 1 - i) & 1UL);
+        data[i] &= 0xFE;
+        data[i] |= (len >> (STEG_HEADER_SIZE - 1 - i)) & 1UL;
+    }
+
+    for(uint32_t i = 0; i < len; i++){
+        data[i+STEG_HEADER_SIZE] &= 0xFE;
+        data[i+STEG_HEADER_SIZE] |= (message[i/8] >> ((len-1-i)%8)) & 1UL;
+    }
+    return *this;
+}
+
+Image& Image::decodeMessage(char* buffer, size_t* max_size){
+    uint32_t len = 0;
+    for(uint8_t i = 0; i < STEG_HEADER_SIZE; i++){
+        len = (len << 1) | (data[i] & 1);
+    }
+    *max_size = len / 8;
+
+    for(uint32_t i = 0; i < len; i++){
+        buffer[i/8] = (buffer[i/8] << 1) | (data[i+STEG_HEADER_SIZE] & 1);
+    }
+    return *this;
+}
