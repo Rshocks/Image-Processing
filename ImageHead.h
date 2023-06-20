@@ -28,6 +28,9 @@ struct Image {
 
     ImageType getFileType(const char* filename);
 
+    Image& diffmap(Image& img);
+    Image& diffmap_scale(Image& img, uint8_t scale = 0);
+
     Image& greyscale_avg();
     Image& greyscale_lum();
 

@@ -2,6 +2,7 @@
 
 int main(int argc, char** argv) {
     Image img("test.png");
+    Image imgTwo("test2.png");
 
     // read write code
     /*img.write("test2.jpg");
@@ -12,7 +13,7 @@ int main(int argc, char** argv) {
     }
     copy.write("test3.jpg");
     Image blank(100, 100, 3);
-    blank.write("test4.jpg");*/
+    blank.write("test4.jpg");
 
     // greyscale code
     /*Image gray_avg = img;
@@ -28,7 +29,7 @@ int main(int argc, char** argv) {
     img.write("green_mask.png");*/
 
     // Encode message code
-    img.encodeMessage("MSG");
+    /*img.encodeMessage("MSG");
     img.write("encoded.png");
 
     char buffer[256] = {0};
@@ -41,7 +42,12 @@ int main(int argc, char** argv) {
     for (size_t i = 0; i < len; i++) {
         printf("%c", buffer[i]);
     }
-    printf("\n");
-    
+    printf("\n");*/
+
+    // Diffmap code
+    /*Image diff = img;
+    diff.diffmap(imgTwo);
+    diff.write("diff.png");*/
+
     return 0;
 }
