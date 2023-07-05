@@ -161,22 +161,50 @@ Image& Image::diffmap(Image& img){
     return *this;
 }
 
-Image& Image::diffmap_scale(Image& img, uint8_t scale){
-    int compare_width = fmin(w, img.w);
-    int compare_height = fmin(h, img.h);
-    int compare_channels = fmin(channels, img.channels);
-    uint8_t largest = 0;
-    for(uint32_t i = 0; i < compare_height; i++){
-        for(uint32_t j=0; j < compare_width; j++){
-            for(uint8_t k = 0; k < compare_channels; k++){
-                data[(i*w + j)*channels + k] = BYTE_BOUND(abs(data[(i*w + j)*channels + k] - img.data[(i*img.w + j)*img.channels + k]));
-                largest = fmax(largest, data[(i*w + j)*channels + k]);
-            }
+Image& Image::flipX(){
+    uint8_t temp[4];
+    uint8_t* pixel1;
+    uint8_t* pixel2;
+    for(int y = 0;y < h; ++y){
+        for(int x = 0;x < w/2; ++x){
+            pixel1 = &data[(x + y * w) * channels];
+            pixel2 = &data[((w - x - 1) + y * w) * channels];
+            memcpy(temp, pixel1, channels);
+            memcpy(pixel1, pixel2, channels);
+            memcpy(pixel2, temp, channels);
         }
     }
-    scale = 255/fmax(1, fmax(scale, largest));
-    for(int i = 0; i < size; i++){
-        data[i] *= scale;
+    return *this;
+}
+
+Image& Image::flipY(){
+    uint8_t temp[4];
+    uint8_t* pixel1;
+    uint8_t* pixel2;
+    for(int x = 0;x < h; ++x){
+        for(int y = 0;y < h/2; ++y){
+            pixel1 = &data[(x + y * w) * channels];
+            pixel2 = &data[(x + (h - 1 - y) * w) * channels];
+            memcpy(temp, pixel1, channels);
+            memcpy(pixel1, pixel2, channels);
+            memcpy(pixel2, temp, channels);
+        }
+    }
+    return *this;
+}
+
+Image& Image::oneChannel(){
+    uint8_t temp[4];
+    uint8_t* pixel1;
+    uint8_t* pixel2;
+    for(int x = 0;x < h; ++x){
+        for(int y = 0;y < h/2; ++y){
+            pixel1 = &data[(x + y * w) * channels];
+            pixel2 = &data[(x + (h - 1 - y) * w) * channels];
+            memcpy(temp, pixel1, 2);
+            memcpy(pixel1, pixel2, 2);
+            memcpy(pixel2, temp, 2);
+        }
     }
     return *this;
 }

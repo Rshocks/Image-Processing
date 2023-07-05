@@ -49,5 +49,15 @@ int main(int argc, char** argv) {
     diff.diffmap(imgTwo);
     diff.write("diff.png");*/
 
+    //Flipping Images
+    img.flipX();
+    img.write("flipX.png");
+
+    img.flipY();
+    img.write("flipY.png");
+
+    img.oneChannel();
+    img.write("oneChannel.png");
+
     return 0;
 }

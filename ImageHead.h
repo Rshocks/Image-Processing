@@ -38,6 +38,11 @@ struct Image {
 
     Image& encodeMessage(const char* message);
     Image& decodeMessage(char* buffer, size_t* max_size);
+
+    Image& flipX();
+    Image& flipY();
+    Image& oneChannel();
+
 };
 
 #endif
